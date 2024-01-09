@@ -118,7 +118,7 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
 # Kafka Java
 ```java {all|3-6|8-11|13-16|17}
     public void eventHandler() {
-        // TODO missing SerDes
+        // TODO missing SerDes // TODO missing split & branch
         KStream<String, Zutaten> zutaten = builder.stream("einkaufen-topic");
         zutaten.mapValues(value -> new Teig(value.getMehl())).to("teigVorbereiten-topic");
         zutaten.mapValues(value -> new Butterschmelze(value.getHonig(), value.getButter())).to("honigMitButterSchmelzen-topic");
