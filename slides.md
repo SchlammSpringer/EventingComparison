@@ -111,4 +111,4 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
 
 # Camunda
 
-![Weihnachtsbäckerei](weihnachtsbaeckerei.png)
+![Weihnachtsbäckerei](/weihnachtsbaeckerei.png)
