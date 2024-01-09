@@ -117,18 +117,23 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
 
 # Kafka Java
 ```java
-public void startStreamStreamInnerJoin() {
-  final StreamsBuilder builder = new StreamsBuilder();
- 
-  KStream<String, String> leftSource = builder.stream("my-kafka-left-stream-topic");
-  KStream<String, String> rightSource = builder.stream("my-kafka-right-stream-topic");
- 
-  KStream<String, String> joined = leftSource.join(rightSource,
-      (leftValue, rightValue) -> "left=" + leftValue + ", right=" + rightValue, /* ValueJoiner */
-      JoinWindows.of(Duration.ofMinutes(5))
-  );
- 
-  joined.to("my-kafka-stream-stream-inner-join-out");
- 
-}
+     public void eventHandler() {
+        // TODO missing SerDes
+        KStream<String, Zutaten> zutaten = builder.stream("einkaufen-topic");
+        zutaten.mapValues(value -> new Teig(value.getMehl()));
+        KStream<String, Teig> teig = builder.stream("teigVorbereiten-topic");
+        zutaten.mapValues(value -> new Butterschmelze(value.getHonig(), value.getButter())).to("honigMitButterSchmelzen-topic");
+        KStream<String, Butterschmelze> butterschmelze = builder.stream("honigMitButterSchmelzen-topic");
+        zutaten.mapValues(value -> new Blech(value.getButter())).to("blechEinbuttern-topic");
+        KStream<String, Blech> blech = builder.stream("blechEinbuttern-topic");
+        KStream<String, Ofen> ofen = builder.stream("ofenVorheizen-topic");
+        KStream<String, ButterTeig> butterTeig = butterschmelze.join(teig, ButterTeig::new,
+        JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(5)));
+        butterTeig.to("butterTeig-topic");
+        KStream<String, Kuchen> kuchen = ofen.join(butterTeig.join(blech, ButterTeigBlech::new,
+        JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(5))),
+        Kuchen::new, JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(5)));
+        kuchen.to("kuchen-topic");
+        // ... Glasur Stream ... Honigkuchen Stream
+        }
 ```
