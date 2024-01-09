@@ -134,6 +134,6 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
         .join(blech, ButterTeigBlech::new, joinWindows),
         Kuchen::new, joinWindows);
         kuchen.to("kuchen-topic");
-        // ... Glasur Stream ... Honigkuchen Stream
+        // TODO ... Glasur Stream TODO ... Honigkuchen Stream
         }
 ```
