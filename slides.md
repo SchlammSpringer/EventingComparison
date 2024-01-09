@@ -116,7 +116,7 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
 ---
 
 # Kafka Java
-```java
+```java {all|3-6|8-11|13-16}
     public void eventHandler() {
         // TODO missing SerDes
         KStream<String, Zutaten> zutaten = builder.stream("einkaufen-topic");
