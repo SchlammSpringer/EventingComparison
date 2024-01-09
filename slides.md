@@ -112,3 +112,23 @@ fun backeHonigkuchen(vorhandeneZutaten: Zutaten) =
 # Camunda
 
 ![Weihnachtsbäckerei](/weihnachtsbaeckerei.png)
+
+---
+
+# Kafka Java
+```java
+public void startStreamStreamInnerJoin() {
+  final StreamsBuilder builder = new StreamsBuilder();
+ 
+  KStream<String, String> leftSource = builder.stream("my-kafka-left-stream-topic");
+  KStream<String, String> rightSource = builder.stream("my-kafka-right-stream-topic");
+ 
+  KStream<String, String> joined = leftSource.join(rightSource,
+      (leftValue, rightValue) -> "left=" + leftValue + ", right=" + rightValue, /* ValueJoiner */
+      JoinWindows.of(Duration.ofMinutes(5))
+  );
+ 
+  joined.to("my-kafka-stream-stream-inner-join-out");
+ 
+}
+```
